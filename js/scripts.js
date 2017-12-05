@@ -1,12 +1,4 @@
-$('span').each(function (index, element) {
-
-	if (index % 2 === 0) {
-		$(element).css('color', '#e74c3c');
-	}
-
-});
-
-//$('span:even()').css('color', '#e74c3c');
+$('span:even()').css('color', '#e74c3c');
 
 $('p').each(function (index, element) {
 
