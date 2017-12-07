@@ -1,14 +1,40 @@
-$('span:even()').css('color', '#e74c3c');
+$(function () {
 
-$('p').each(function (index, element) {
+	var $carouselList = $('#carousel ul');
+	var $next = $('.next');
+	var $prev = $('.prev');
 
-	var button = '<button class="btn" data-tmp=' + index + '>Click me!</button>';
-	$(element).prepend(button);
+	$next.click(changeSlides);
 
-});
+	$prev.click(function () {
+		$carouselList.animate({
+			marginLeft: '+=400'
+		}, 500, function () {
+			var $firstSlide = $carouselList.find('li:first');
+			var $lastSlide = $carouselList.find('li:last');
 
-$('button').on('click', function() {
+			$firstSlide.before($lastSlide);
+			$carouselList.css({
+				marginLeft: 0
+			});
+		});
+	});
 
-	alert($(this).attr('data-tmp'));
-	
+	setInterval(changeSlides, 10000);
+
+	function changeSlides() {
+		$carouselList.animate({
+			marginLeft: '-=400'
+		}, 500, function () {
+			var $firstSlide = $carouselList.find('li:first');
+			var $lastSlide = $carouselList.find('li:last');
+
+			$lastSlide.after($firstSlide);
+			$carouselList.css({
+				marginLeft: 0
+			});
+		});
+
+	}
+
 });
