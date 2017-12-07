@@ -4,25 +4,27 @@ $(function () {
 	var $next = $('.next');
 	var $prev = $('.prev');
 
-	$next.click(changeSlides);
+	$next.click(changeSlidesNext);
 
-	$prev.click(function () {
+	$prev.click(changeSlidesPrev);
+	
+	function changeSlidesPrev() {
 		$carouselList.animate({
-			marginLeft: '+=400'
+			marginLeft: '0'
 		}, 500, function () {
 			var $firstSlide = $carouselList.find('li:first');
 			var $lastSlide = $carouselList.find('li:last');
 
 			$firstSlide.before($lastSlide);
 			$carouselList.css({
-				marginLeft: 0
+				marginLeft: -400
 			});
 		});
-	});
+	}
 
-	setInterval(changeSlides, 10000);
+	setInterval(changeSlidesPrev, 5000);
 
-	function changeSlides() {
+	function changeSlidesNext() {
 		$carouselList.animate({
 			marginLeft: '-=400'
 		}, 500, function () {
