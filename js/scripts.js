@@ -11,7 +11,7 @@ $(function () {
 	function changeSlidesPrev() {
 		$carouselList.animate({
 			marginLeft: '0'
-		}, 500, function () {
+		}, "slow", function () {
 			var $firstSlide = $carouselList.find('li:first');
 			var $lastSlide = $carouselList.find('li:last');
 
@@ -22,12 +22,12 @@ $(function () {
 		});
 	}
 
-	setInterval(changeSlidesPrev, 5000);
+	//setInterval(changeSlidesNext, 30000);
 
 	function changeSlidesNext() {
 		$carouselList.animate({
 			marginLeft: '-=400'
-		}, 500, function () {
+		}, "slow", function () {
 			var $firstSlide = $carouselList.find('li:first');
 			var $lastSlide = $carouselList.find('li:last');
 
