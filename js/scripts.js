@@ -1,15 +1,18 @@
 $(function () {
 
 	var $carouselList = $('#carousel ul');
+	var $indicatorsList = $('.indicator');
 	var $next = $('.next');
 	var $prev = $('.prev');
 	var slideDirection = {
-		next: 'next',
-		prev: 'prev'
+		next: 'left',
+		prev: 'right'
 	};
 	var $quantityElementsList = $('.pic', $carouselList).length;
 	var indexElement = 0;
 	var intervalSlide = 3000;
+
+	//FUNCTIONS
 
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
@@ -22,28 +25,30 @@ $(function () {
 	}
 
 	function moveNext(timeMoveSlide) {
-		counterForward();
+		var $firstElement = $carouselList.find('li:first');
+		var $lastElement = $carouselList.find('li:last');
+
 		$carouselList.animate({
 			marginLeft: '-=400'
 		}, timeMoveSlide, function () {
-			var $firstElement = $carouselList.find('li:first');
-			var $lastElement = $carouselList.find('li:last');
+
 			$lastElement.after($firstElement);
 			$carouselList.css({
 				marginLeft: 0
-			})
-
-		})
+			});
+			counterForward();
+		});
 	}
 
-	function movePrev(time) {
-		counterBackward();
+	function movePrev(timeMoveSlide) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
 		$firstElement.before($lastElement);
 		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
-		}, time);
+		}, timeMoveSlide, function () {
+			counterBackward();
+		});
 	}
 
 	function counterForward() {
@@ -75,28 +80,31 @@ $(function () {
 		}, intervalSlide);
 	}
 
-	repeat();
-
 	function stopRepeat() {
 		clearInterval(repeat);
 	}
 
+	//EVENTS
+
 	$next.click(function () {
 		stopRepeat();
-		changeSlide(slideDirection.next)
+		changeSlide('left')
 	});
+	
 	$prev.click(function () {
 		stopRepeat();
 		changeSlide(slideDirection.prev)
 	});
 
-	$('.indicator').click(function () {
+	$indicatorsList.click(function () {
+		var $this = $(this);
+
 		stopRepeat();
 
 		$('li.active').removeClass('active');
-		$(this).addClass('active');
+		$this.addClass('active');
 
-		var indexIndicator = $('.indicator').index($(this));
+		var indexIndicator = $('.indicator').index($this);
 		var quantityMove = indexIndicator - indexElement;
 
 		if (quantityMove > 0) {
@@ -109,5 +117,9 @@ $(function () {
 			}
 		}
 	});
+
+	//EXECUTE
+
+	repeat();
 
 });
