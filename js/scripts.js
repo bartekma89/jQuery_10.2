@@ -11,84 +11,76 @@ $(function () {
 	var indexElement = 0;
 	var intervalSlide = 3000;
 
-	//FUNCTIONS
-	
-	//change slide
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
-				moveNext('slow');
+				moveNext();
 			} else {
-				movePrev('slow');
+				movePrev();
 			}
 		}
 	}
-	//move slide to next
-	function moveNext(slideTime) {
+
+	function moveNext(timeMoveSlide) {
 		counterForward();
-		var $li = $carouselList.find('li');
 		$carouselList.animate({
-			marginLeft: -400
-		}, slideTime, function () {
-			$li.last().after($li.first());
+			marginLeft: '-=400'
+		}, timeMoveSlide, function () {
+			var $firstElement = $carouselList.find('li:first');
+			var $lastElement = $carouselList.find('li:last');
+			$lastElement.after($firstElement);
 			$carouselList.css({
 				marginLeft: 0
 			})
 
 		})
 	}
-	//move slide to prev
-	function movePrev(slideTime) {
+
+	function movePrev(time) {
 		counterBackward();
-		var $li = $carouselList.find('li');
-		$carouselList.css('marginLeft', -400);
-		$li.first().before($li.last());
-		$carouselList.animate({
+		var $firstElement = $carouselList.find('li:first');
+		var $lastElement = $carouselList.find('li:last');
+		$firstElement.before($lastElement);
+		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
-		}, slideTime);
+		}, time);
 	}
 
-	function stopRepeat() {
-		clearInterval(repeat);
-	}
-
-	//automatically move slide next or prev
-	function repeat() {
-		stopRepeat();
-		setInterval(function () {
-			changeSlide(slideDirection.prev)
-		}, intervalSlide);
-	}
-
-	//counter to forward
 	function counterForward() {
 		if (indexElement < $quantityElementsList - 1) {
 			indexElement++;
 		} else {
 			indexElement = 0;
 		}
-		setIndicator()
-
+		setIndicator();
 	}
-	//counter to backward
+
 	function counterBackward() {
 		if (indexElement === 0) {
 			indexElement = $quantityElementsList - 1;
 		} else {
 			indexElement--;
 		}
-		setIndicator()
+		setIndicator();
 	}
-	
-	//set indicator
+
 	function setIndicator() {
 		$('li.active').removeClass('active');
 		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
 	}
-	
-	//EVENTS
-	
-	//move slide to next manual
+
+	function repeat() {
+		setInterval(function () {
+			changeSlide(slideDirection.next)
+		}, intervalSlide);
+	}
+
+	repeat();
+
+	function stopRepeat() {
+		clearInterval(repeat);
+	}
+
 	$next.click(function () {
 		stopRepeat();
 		changeSlide(slideDirection.next)
@@ -98,7 +90,6 @@ $(function () {
 		changeSlide(slideDirection.prev)
 	});
 
-	//change indicators manual
 	$('.indicator').click(function () {
 		stopRepeat();
 
@@ -106,19 +97,17 @@ $(function () {
 		$(this).addClass('active');
 
 		var indexIndicator = $('.indicator').index($(this));
-		var quantityLoop = indexIndicator - indexElement;
+		var quantityMove = indexIndicator - indexElement;
 
-		if (quantityLoop > 0) {
-			for (var i = 0; i < quantityLoop; i++) {
-				moveNext('slow');
+		if (quantityMove > 0) {
+			for (var i = 0; i < quantityMove; i++) {
+				moveNext(100);
 			}
 		} else {
-			for (var j = quantityLoop; j < 0; j++) {
-				movePrev('slow');
+			for (var j = quantityMove; j < 0; j++) {
+				movePrev(100);
 			}
 		}
 	});
-
-	//repeat();
 
 });
