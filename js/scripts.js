@@ -88,12 +88,12 @@ $(function () {
 
 	$next.click(function () {
 		stopRepeat();
-		changeSlide('left')
+		changeSlide('left');
 	});
 	
 	$prev.click(function () {
 		stopRepeat();
-		changeSlide(slideDirection.prev)
+		changeSlide('right');
 	});
 
 	$indicatorsList.click(function () {
