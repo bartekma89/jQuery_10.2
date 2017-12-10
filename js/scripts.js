@@ -1,4 +1,4 @@
-/*$(function () {*/
+$(function () {
 
 var $carouselList = $('#carousel ul');
 var $next = $('.next');
@@ -98,12 +98,4 @@ $prev.click(function () {
 	$indicatorList.find('li:first').addClass('active');
 })();
 
-$('li').click(function (e) {
-	console.log(e);
 });
-
-$('ul').click(function (e) {
-	console.log(e);
-});
-
-/*});*/
