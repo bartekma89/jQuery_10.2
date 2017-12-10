@@ -81,13 +81,13 @@ li {
 	border: 1px solid #fff;
 	background-color: transparent;
 	border-radius: 50%;
+	transform: translate(0, -50%);
 }
 
-.carousel-indicators .active {
+li.active {
 	background: #fff;
-	width: 12px;
-	height: 12px;
-	line-height: 12px;
+	width: 13px;
+	height: 13px;
 }
 
 .pic {

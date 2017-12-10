@@ -7,9 +7,9 @@ var slideDirection = {
 	next: 'next',
 	prev: 'prev'
 };
-var $quantityElementsList = $('.pic', $carouselList);
+var $quantityElementsList = $('.pic', $carouselList).length;
 var indexElement = 0;
-var intervalSlide = 3000;
+var intervalSlide = 1000;
 
 function changeSlide(direction) {
 	if (!$carouselList.is(':animated')) {
@@ -22,6 +22,7 @@ function changeSlide(direction) {
 }
 
 function moveNext() {
+	counter();
 	$carouselList.animate({
 		marginLeft: '-=400'
 	}, 'slow', function () {
@@ -31,12 +32,18 @@ function moveNext() {
 		$carouselList.css({
 			marginLeft: 0
 		})
-		counter();
+		
 	})
 }
 
 function counter() {
-	indexElement++;
+	if (indexElement < $quantityElementsList-1) {
+		indexElement++;
+	} else {
+		indexElement = 0;
+	}
+	$('li.active').removeClass('active');
+	$('li', '.carousel-indicators').eq(indexElement).addClass('active');
 
 }
 
@@ -50,7 +57,7 @@ function movePrev() {
 }
 
 function repeat() {
-	setInterval(function() {
+	setInterval(function () {
 		changeSlide(slideDirection.next)
 	}, intervalSlide);
 }
@@ -78,27 +85,24 @@ $prev.click(function () {
 	$carouselList.after($indicatorList);
 
 	var $documentFragment = $(document.createDocumentFragment());
-	
-	$carouselList.find('li').each(function (index) {
+
+	$carouselList.find('li').each(function () {
 		var $this = $(this);
-		var $li = $('<li>', {
-			'data-index': index
-		});
-		
+
 		if ($this.hasClass('pic')) {
-			$documentFragment.append($li);
+			$documentFragment.append('<li></li>');
 		}
 	})
-	
+
 	$indicatorList.append($documentFragment);
-	
+	$indicatorList.find('li:first').addClass('active');
 })();
 
-$('li').click(function(e){
+$('li').click(function (e) {
 	console.log(e);
 });
 
-$('ul').click(function(e){
+$('ul').click(function (e) {
 	console.log(e);
 });
 
