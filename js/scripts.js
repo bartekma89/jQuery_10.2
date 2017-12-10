@@ -9,76 +9,86 @@ $(function () {
 	};
 	var $quantityElementsList = $('.pic', $carouselList).length;
 	var indexElement = 0;
-	var intervalSlide = 1000;
+	var intervalSlide = 3000;
 
+	//FUNCTIONS
+	
+	//change slide
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
-				moveNext();
+				moveNext('slow');
 			} else {
-				movePrev();
+				movePrev('slow');
 			}
 		}
 	}
-
-	function moveNext() {
+	//move slide to next
+	function moveNext(slideTime) {
 		counterForward();
+		var $li = $carouselList.find('li');
 		$carouselList.animate({
-			marginLeft: '-=400'
-		}, 'slow', function () {
-			var $firstElement = $carouselList.find('li:first');
-			var $lastElement = $carouselList.find('li:last');
-			$lastElement.after($firstElement);
+			marginLeft: -400
+		}, slideTime, function () {
+			$li.last().after($li.first());
 			$carouselList.css({
 				marginLeft: 0
 			})
 
 		})
 	}
+	//move slide to prev
+	function movePrev(slideTime) {
+		counterBackward();
+		var $li = $carouselList.find('li');
+		$carouselList.css('marginLeft', -400);
+		$li.first().before($li.last());
+		$carouselList.animate({
+			marginLeft: 0
+		}, slideTime);
+	}
 
+	function stopRepeat() {
+		clearInterval(repeat);
+	}
+
+	//automatically move slide next or prev
+	function repeat() {
+		stopRepeat();
+		setInterval(function () {
+			changeSlide(slideDirection.prev)
+		}, intervalSlide);
+	}
+
+	//counter to forward
 	function counterForward() {
 		if (indexElement < $quantityElementsList - 1) {
 			indexElement++;
 		} else {
 			indexElement = 0;
 		}
-		$('li.active').removeClass('active');
-		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
+		setIndicator()
 
 	}
-
+	//counter to backward
 	function counterBackward() {
-		if (indexElement == 0) {
+		if (indexElement === 0) {
 			indexElement = $quantityElementsList - 1;
 		} else {
 			indexElement--;
 		}
+		setIndicator()
+	}
+	
+	//set indicator
+	function setIndicator() {
 		$('li.active').removeClass('active');
 		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
 	}
-
-	function movePrev() {
-		counterBackward();
-		var $firstElement = $carouselList.find('li:first');
-		var $lastElement = $carouselList.find('li:last');
-		$firstElement.before($lastElement);
-		$carouselList.css('marginLeft', '-=400').animate({
-			marginLeft: 0
-		}, 'slow');
-	}
-
-	function repeat() {
-		setInterval(function () {
-			changeSlide(slideDirection.next)
-		}, intervalSlide);
-	}
-
-	repeat();
-
-	function stopRepeat() {
-		clearInterval(repeat);
-	}
-
+	
+	//EVENTS
+	
+	//move slide to next manual
 	$next.click(function () {
 		stopRepeat();
 		changeSlide(slideDirection.next)
@@ -88,25 +98,27 @@ $(function () {
 		changeSlide(slideDirection.prev)
 	});
 
+	//change indicators manual
+	$('.indicator').click(function () {
+		stopRepeat();
 
+		$('li.active').removeClass('active');
+		$(this).addClass('active');
 
-	(function () {
-		var $indicatorList = $('<ol></ol');
-		$indicatorList.addClass('carousel-indicators');
-		$carouselList.after($indicatorList);
+		var indexIndicator = $('.indicator').index($(this));
+		var quantityLoop = indexIndicator - indexElement;
 
-		var $documentFragment = $(document.createDocumentFragment());
-
-		$carouselList.find('li').each(function () {
-			var $this = $(this);
-
-			if ($this.hasClass('pic')) {
-				$documentFragment.append('<li></li>');
+		if (quantityLoop > 0) {
+			for (var i = 0; i < quantityLoop; i++) {
+				moveNext('slow');
 			}
-		})
+		} else {
+			for (var j = quantityLoop; j < 0; j++) {
+				movePrev('slow');
+			}
+		}
+	});
 
-		$indicatorList.append($documentFragment);
-		$indicatorList.find('li:first').addClass('active');
-	})();
+	//repeat();
 
 });
