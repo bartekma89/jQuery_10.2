@@ -16,6 +16,7 @@ $(function () {
 
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
+			console.log(indexElement);
 			if (direction === slideDirection.next) {
 				counterForward();
 				moveNextSlide('slow');
@@ -33,11 +34,11 @@ $(function () {
 			var $firstElement = $carouselList.find('li:first');
 			var $lastElement = $carouselList.find('li:last');
 			$lastElement.after($firstElement);
+			console.log('change photo forward')
 			$carouselList.css({
 				marginLeft: 0
 			});
 		});
-		console.log('change photo forward')
 	}
 
 	function movePrevSlide(timeMoveSlide) {
@@ -76,7 +77,7 @@ $(function () {
 
 	function repeat() {
 		setInterval(function () {
-			changeSlide(slideDirection.prev);
+			changeSlide(slideDirection.next);
 		}, intervalSlide);
 	}
 
@@ -106,6 +107,7 @@ $(function () {
 		$('li.active').removeClass('active');
 		$this.addClass('active');
 		console.log('change photo indicators')
+		console.log(actuallyIndex);
 
 		var indexIndicator = $('.indicator').index($this);
 		var quantityMove = indexIndicator - actuallyIndex;
@@ -119,10 +121,11 @@ $(function () {
 				movePrevSlide(75);
 			}
 		}
+		
+		indexElement = indexIndicator;
 	});
 
 	//EXECUTE
 
 	repeat();
-
 });
