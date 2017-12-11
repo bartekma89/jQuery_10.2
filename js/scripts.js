@@ -17,36 +17,39 @@ $(function () {
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
+				counterForward();
 				moveNext('slow');
 			} else {
+				counterBackward();
 				movePrev('slow');
 			}
 		}
 	}
 
 	function moveNext(timeMoveSlide) {
-		var $firstElement = $carouselList.find('li:first');
-		var $lastElement = $carouselList.find('li:last');
-counterForward();
+		//counterForward();
 		$carouselList.animate({
 			marginLeft: '-=400'
 		}, timeMoveSlide, function () {
-
+			var $firstElement = $carouselList.find('li:first');
+			var $lastElement = $carouselList.find('li:last');
 			$lastElement.after($firstElement);
 			$carouselList.css({
 				marginLeft: 0
 			});
 		});
+		console.log('change photo forward')
 	}
 
 	function movePrev(timeMoveSlide) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
-		counterBackward();
+		//counterBackward();
 		$firstElement.before($lastElement);
 		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
 		}, timeMoveSlide);
+		console.log('change photo backword')
 	}
 
 	function counterForward() {
@@ -70,11 +73,12 @@ counterForward();
 	function setIndicator() {
 		$('li.active').removeClass('active');
 		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
+		console.log('change photo indicators')
 	}
 
 	function repeat() {
 		setInterval(function () {
-			changeSlide(slideDirection.prev)
+			changeSlide(slideDirection.prev);
 		}, intervalSlide);
 	}
 
@@ -88,13 +92,13 @@ counterForward();
 		stopRepeat();
 		changeSlide('left');
 	});
-	
+
 	$prev.click(function () {
 		stopRepeat();
 		changeSlide('right');
 	});
 
-	
+
 	//change indicators
 	$indicatorsList.click(function () {
 		var $this = $(this);
