@@ -16,7 +16,6 @@ $(function () {
 
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
-			console.log(indexElement);
 			if (direction === slideDirection.next) {
 				counterForward();
 				moveNextSlide('slow');
@@ -34,7 +33,6 @@ $(function () {
 			var $firstElement = $carouselList.find('li:first');
 			var $lastElement = $carouselList.find('li:last');
 			$lastElement.after($firstElement);
-			console.log('change photo forward')
 			$carouselList.css({
 				marginLeft: 0
 			});
@@ -48,7 +46,6 @@ $(function () {
 		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
 		}, timeMoveSlide);
-		console.log('change photo backword')
 	}
 
 	function counterForward() {
@@ -72,7 +69,6 @@ $(function () {
 	function setIndicator() {
 		$('li.active').removeClass('active');
 		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
-		console.log('change photo indicators')
 	}
 
 	function repeat() {
@@ -100,14 +96,13 @@ $(function () {
 
 	//change indicators
 	$indicatorsList.click(function () {
-		var $this = $(this);
-		var actuallyIndex = $('li.active').attr('id') - 1;
 		stopRepeat();
+		
+		var $this = $(this);
+		var actuallyIndex = $('li.active').attr('id');
 		
 		$('li.active').removeClass('active');
 		$this.addClass('active');
-		console.log('change photo indicators')
-		console.log(actuallyIndex);
 
 		var indexIndicator = $('.indicator').index($this);
 		var quantityMove = indexIndicator - actuallyIndex;
@@ -123,6 +118,7 @@ $(function () {
 		}
 		
 		indexElement = indexIndicator;
+		stopRepeat();
 	});
 
 	//EXECUTE
