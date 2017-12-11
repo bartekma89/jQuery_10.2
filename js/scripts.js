@@ -17,9 +17,9 @@ $(function () {
 	function changeSlide(direction) {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
-				moveNext();
+				moveNext('slow');
 			} else {
-				movePrev();
+				movePrev('slow');
 			}
 		}
 	}
@@ -27,7 +27,7 @@ $(function () {
 	function moveNext(timeMoveSlide) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
-
+counterForward();
 		$carouselList.animate({
 			marginLeft: '-=400'
 		}, timeMoveSlide, function () {
@@ -36,19 +36,17 @@ $(function () {
 			$carouselList.css({
 				marginLeft: 0
 			});
-			counterForward();
 		});
 	}
 
 	function movePrev(timeMoveSlide) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
+		counterBackward();
 		$firstElement.before($lastElement);
 		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
-		}, timeMoveSlide, function () {
-			counterBackward();
-		});
+		}, timeMoveSlide);
 	}
 
 	function counterForward() {
@@ -76,7 +74,7 @@ $(function () {
 
 	function repeat() {
 		setInterval(function () {
-			changeSlide(slideDirection.next)
+			changeSlide(slideDirection.prev)
 		}, intervalSlide);
 	}
 
@@ -96,6 +94,8 @@ $(function () {
 		changeSlide('right');
 	});
 
+	
+	//change indicators
 	$indicatorsList.click(function () {
 		var $this = $(this);
 
@@ -109,17 +109,17 @@ $(function () {
 
 		if (quantityMove > 0) {
 			for (var i = 0; i < quantityMove; i++) {
-				moveNext(100);
+				moveNext(75);
 			}
 		} else {
 			for (var j = quantityMove; j < 0; j++) {
-				movePrev(100);
+				movePrev(75);
 			}
 		}
 	});
 
 	//EXECUTE
 
-	repeat();
+	//repeat();
 
 });
