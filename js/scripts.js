@@ -18,16 +18,15 @@ $(function () {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
 				counterForward();
-				moveNext('slow');
+				moveNextSlide('slow');
 			} else {
 				counterBackward();
-				movePrev('slow');
+				movePrevSlide('slow');
 			}
 		}
 	}
 
-	function moveNext(timeMoveSlide) {
-		//counterForward();
+	function moveNextSlide(timeMoveSlide) {
 		$carouselList.animate({
 			marginLeft: '-=400'
 		}, timeMoveSlide, function () {
@@ -41,10 +40,9 @@ $(function () {
 		console.log('change photo forward')
 	}
 
-	function movePrev(timeMoveSlide) {
+	function movePrevSlide(timeMoveSlide) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
-		//counterBackward();
 		$firstElement.before($lastElement);
 		$carouselList.css('marginLeft', '-=400').animate({
 			marginLeft: 0
@@ -102,28 +100,29 @@ $(function () {
 	//change indicators
 	$indicatorsList.click(function () {
 		var $this = $(this);
-
+		var actuallyIndex = $('li.active').attr('id') - 1;
 		stopRepeat();
-
+		
 		$('li.active').removeClass('active');
 		$this.addClass('active');
+		console.log('change photo indicators')
 
 		var indexIndicator = $('.indicator').index($this);
-		var quantityMove = indexIndicator - indexElement;
+		var quantityMove = indexIndicator - actuallyIndex;
 
 		if (quantityMove > 0) {
 			for (var i = 0; i < quantityMove; i++) {
-				moveNext(75);
+				moveNextSlide(75);
 			}
 		} else {
 			for (var j = quantityMove; j < 0; j++) {
-				movePrev(75);
+				movePrevSlide(75);
 			}
 		}
 	});
 
 	//EXECUTE
 
-	//repeat();
+	repeat();
 
 });
