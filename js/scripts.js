@@ -99,27 +99,35 @@ $(function () {
 		stopRepeat();
 		
 		var $this = $(this);
-		var actuallyIndex = $('li.active').attr('id');
+		var $getActuallyIdIndicator = $('li.active').attr('id');
 		
 		$('li.active').removeClass('active');
 		$this.addClass('active');
 
-		var indexIndicator = $('.indicator').index($this);
-		var quantityMove = indexIndicator - actuallyIndex;
-
+		var $getIndexIndicator = $('.indicator').index($this);
+		var quantityMove = $getIndexIndicator - $getActuallyIdIndicator;
+		
+		moveSlideByIndicator(quantityMove);
+		
+		indexElement = $getIndexIndicator;
+		stopRepeat();
+	});
+	
+	function moveSlideByIndicator(quantityMove) {
+		
 		if (quantityMove > 0) {
 			for (var i = 0; i < quantityMove; i++) {
+				stopRepeat();
 				moveNextSlide(75);
 			}
 		} else {
 			for (var j = quantityMove; j < 0; j++) {
+				stopRepeat();
 				movePrevSlide(75);
 			}
 		}
 		
-		indexElement = indexIndicator;
-		stopRepeat();
-	});
+	}
 
 	//EXECUTE
 
