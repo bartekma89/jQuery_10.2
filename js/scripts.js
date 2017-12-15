@@ -9,21 +9,26 @@ $(function () {
 		prev: 'right'
 	};
 	var $quantityElementsList = $('.pic', $carouselList).length;
+	var interval;
 	var indexElement = 0;
 	var intervalSlide = 3000;
 
 	//FUNCTIONS
 
 	function changeSlide(direction) {
+		stopRepeat();
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
 				counterForward();
 				moveNextSlide('slow');
+				setIndicator();
 			} else {
 				counterBackward();
 				movePrevSlide('slow');
+				setIndicator();
 			}
 		}
+		startRepeat();
 	}
 
 	function moveNextSlide(timeMoveSlide) {
@@ -54,7 +59,6 @@ $(function () {
 		} else {
 			indexElement = 0;
 		}
-		setIndicator();
 	}
 
 	function counterBackward() {
@@ -63,7 +67,6 @@ $(function () {
 		} else {
 			indexElement--;
 		}
-		setIndicator();
 	}
 
 	function setIndicator() {
@@ -71,65 +74,58 @@ $(function () {
 		$('li', '.carousel-indicators').eq(indexElement).addClass('active');
 	}
 
-	function repeat() {
-		setInterval(function () {
+	function startRepeat() {
+		interval = setInterval(function () {
 			changeSlide(slideDirection.next);
 		}, intervalSlide);
+		console.log('start ', interval);
 	}
 
 	function stopRepeat() {
-		clearInterval(repeat);
+		console.log('stop, ', interval);
+		clearInterval(interval);
 	}
 
 	//EVENTS
 
 	$next.click(function () {
-		stopRepeat();
 		changeSlide('left');
 	});
 
 	$prev.click(function () {
-		stopRepeat();
 		changeSlide('right');
 	});
 
 
 	//change indicators
 	$indicatorsList.click(function () {
-		stopRepeat();
-		
 		var $this = $(this);
-		var $getActuallyIdIndicator = $('li.active').attr('id');
-		
+		var $getIndexIndicator = $('.indicator').index($this);
+
 		$('li.active').removeClass('active');
 		$this.addClass('active');
 
-		var $getIndexIndicator = $('.indicator').index($this);
-		var quantityMove = $getIndexIndicator - $getActuallyIdIndicator;
-		
-		moveSlideByIndicator(quantityMove);
-		
+		moveSlideByIndicator($getIndexIndicator - indexElement);
+
 		indexElement = $getIndexIndicator;
-		stopRepeat();
 	});
-	
+
 	function moveSlideByIndicator(quantityMove) {
-		
+		stopRepeat();
 		if (quantityMove > 0) {
 			for (var i = 0; i < quantityMove; i++) {
-				stopRepeat();
 				moveNextSlide(75);
 			}
 		} else {
 			for (var j = quantityMove; j < 0; j++) {
-				stopRepeat();
 				movePrevSlide(75);
 			}
 		}
-		
+		startRepeat();
 	}
 
 	//EXECUTE
 
-	repeat();
+	startRepeat();
+
 });

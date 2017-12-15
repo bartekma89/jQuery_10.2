@@ -78,14 +78,14 @@ li {
 	height: 10px;
 	margin: 2px;
 	cursor: pointer;
-	border: 1px solid #fff;
+	border: 1px solid #8e44ad;
 	background-color: transparent;
 	border-radius: 50%;
 	transform: translate(0, -50%);
 }
 
 li.active {
-	background: #fff;
+	background: #8e44ad;
 	width: 13px;
 	height: 13px;
 }
