@@ -78,11 +78,9 @@ $(function () {
 		interval = setInterval(function () {
 			changeSlide(slideDirection.next);
 		}, intervalSlide);
-		console.log('start ', interval);
 	}
 
 	function stopRepeat() {
-		console.log('stop, ', interval);
 		clearInterval(interval);
 	}
 
