@@ -12,7 +12,7 @@ $(function () {
 	var interval;
 	var indexElement = 0;
 	var intervalSlideTime = 3000;
-	
+
 
 	//FUNCTIONS
 
@@ -21,21 +21,21 @@ $(function () {
 		if (!$carouselList.is(':animated')) {
 			if (direction === slideDirection.next) {
 				counterForward();
-				moveNextSlide('ease-out');
+				moveNextSlide('slow', 'swing');
 				setIndicator();
 			} else {
 				counterBackward();
-				movePrevSlide('ease-out');
+				movePrevSlide('slow', 'swing');
 				setIndicator();
 			}
 		}
 		startRepeat();
 	}
 
-	function moveNextSlide(timeMoveSlide) {
+	function moveNextSlide(duration, easing) {
 		$carouselList.animate({
 			marginLeft: '-=500'
-		}, timeMoveSlide, function () {
+		}, duration, easing, function () {
 			var $firstElement = $carouselList.find('li:first');
 			var $lastElement = $carouselList.find('li:last');
 			$lastElement.after($firstElement);
@@ -45,13 +45,13 @@ $(function () {
 		});
 	}
 
-	function movePrevSlide(timeMoveSlide) {
+	function movePrevSlide(duration, easing) {
 		var $firstElement = $carouselList.find('li:first');
 		var $lastElement = $carouselList.find('li:last');
 		$firstElement.before($lastElement);
 		$carouselList.css('marginLeft', '-=500').animate({
 			marginLeft: 0
-		}, timeMoveSlide);
+		}, duration, easing);
 	}
 
 	function counterForward() {
@@ -104,6 +104,10 @@ $(function () {
 		$('li.active').removeClass('active');
 		$this.addClass('active');
 
+		console.log($('.indicator').eq($getIndexIndicator).text());
+		console.log('indexElement, ', indexElement);
+		console.log('$getIndexIndicator', $getIndexIndicator);
+
 		moveSlideByIndicator($getIndexIndicator - indexElement);
 
 		indexElement = $getIndexIndicator;
@@ -113,14 +117,22 @@ $(function () {
 		stopRepeat();
 		if (quantityMove > 0) {
 			for (var i = 0; i < quantityMove; i++) {
-				moveNextSlide(75);
+				jumpToForwardSlide();
 			}
 		} else {
 			for (var j = quantityMove; j < 0; j++) {
-				movePrevSlide(75);
+				jumpToBackwardSlide();
 			}
 		}
 		startRepeat();
+	}
+
+	function jumpToForwardSlide() {
+		$carouselList.find('li:last').after($carouselList.find('li:first'));
+	}
+
+	function jumpToBackwardSlide() {
+		$carouselList.find('li:first').before($carouselList.find('li:last'));
 	}
 
 	//EXECUTE
