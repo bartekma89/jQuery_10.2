@@ -6,7 +6,7 @@
 }
 
 #carousel {
-	width: 400px;
+	width: 500px;
 	overflow: hidden;
 	position: absolute;
 	top: 50%;
@@ -19,7 +19,7 @@
 ul {
 	padding: 0;
 	margin: 0;
-	width: 2000px;
+	width: 2500px;
 }
 
 li {
@@ -28,35 +28,35 @@ li {
 	padding: 0;
 	float: left;
 	height: 300px;
-	width: 400px;
+	width: 500px;
 }
 
-.carousel-control {
+.arrow {
 	cursor: pointer;
-	width: 10%;
 	position: absolute;
-	text-align: center;
-	color: #fff;
-	font-size: 24px;
-	line-height: 300px;
-	font-weight: bold;
-	opacity: 0;
+	background: transparent;	
+	z-index: 5;
+	width: 20px;
+	height: 20px;
+	border-top: 3px solid #fff;
+	border-left: 3px solid #fff;
+	top: 50%;
+	transform: translateY(50%);
+	transition: border-color .3s ease-out;
 }
 
-.carousel-control:hover {
-	opacity: .8;
+.arrow:hover {
+	border-color: #8e44ad;
 }
 
-.prev {
-	background: linear-gradient(to left, transparent, #000);
-	left: 0;
-	right: auto;
+.arrow-prev {
+	left: 15px;
+	transform: rotate(-45deg)
 }
 
-.next {
-	background: linear-gradient(to right, transparent, #000);
-	right: 0;
-	left: auto;
+.arrow-next {
+	right: 15px;
+	transform: rotate(135deg);
 }
 
 .carousel-indicators {
