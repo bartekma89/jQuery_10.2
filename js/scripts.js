@@ -104,10 +104,6 @@ $(function () {
 		$('li.active').removeClass('active');
 		$this.addClass('active');
 
-		console.log($('.indicator').eq($getIndexIndicator).text());
-		console.log('indexElement, ', indexElement);
-		console.log('$getIndexIndicator', $getIndexIndicator);
-
 		moveSlideByIndicator($getIndexIndicator - indexElement);
 
 		indexElement = $getIndexIndicator;
