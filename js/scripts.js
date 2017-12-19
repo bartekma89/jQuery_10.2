@@ -10,9 +10,9 @@
 			direction: 'left'
 		}, options);
 
-		return this.each(function () {
+		return this.each(function (carousel) {
 
-			var $carouselList = $('ul', '#carousel');
+			var $carouselList = $('ul', '.carousel');
 			var interval;
 			var intervalSlideTime = options.animateTime;
 			var $quantityElementList = $carouselList.find('li').length;
@@ -108,9 +108,16 @@
 
 $(document).ready(function () {
 
-	$('#carousel').carousel({
+	$('#wrapper1').carousel({
 		auto: true,
 		direction: 'left'
 	});
+	
+/*
+	$('#carousel2').carousel({
+		auto: true,
+		direction: 'left'
+	});
+*/
 
 });
