@@ -1,60 +1,95 @@
-$(function ($) {
+(function ($) {
 
 	$.fn.carousel = function () {
 
 		return this.each(function () {
 
-			var $this = $(this);
-			var $prev = $this.find('.arrow-prev');
-			var $next = $this.find('.arrow-next');
-			var $carouselList = $('.carousel ul');
-			var changeSlide = {
-				left: 'left',
-				right: 'right'
-			};
-			var interval = setInterval(changeSlide, 3000);
+			var $carouselList = $('ul', '#carousel');
+			var interval;
+			var intervalSlideTime = 2000;
+			var $quantityElementList = $carouselList.find('li').length;
+			var indexElement = 0;
 
-			function changeSlide() {
-				$carouselList.animate({
-					'marginLeft': -500
-				}, 'slow', moveSlide);
-			};
-
-
-			function moveSlide(direction) {
-				var firstSlide = $carouselList.find('li:first');
-				var lastSlide = $carouselList.find('li:last');
-
-				if (direction === changeSlide.left) {
-					lastSlide.after(firstSlide);
-				} else {
-					firstSlide.before(lastSlide);
+			function changeSlide(direction) {
+				stopRepeat();
+				if (!$carouselList.is(':animated')) {
+					if (direction === 'left') {
+						counterForward();
+						moveForwardSlide();
+						setIndicator();
+					} else {
+						counterBackward();
+						moveBackwardSlide();
+						setIndicator();
+					}
 				}
-
-				$carouselList.css({
-					'marginLeft': 0
-				});
-
+				startRepeat();
 			}
 
-			$prev.on('click', function () {
-				moveSlide(changeSlide.right);
-				clearInterval(interval);
-			});
+			function moveForwardSlide() {
+				var $firstElement = $carouselList.find('li:first');
+				var $lastElement = $carouselList.find('li:last');
 
-			$next.on('click', function () {
-				moveSlide(changeSlide.left);
+				$carouselList.animate({'marginLeft': '-=500'}, 'slow', function () {
+					$lastElement.after($firstElement);
+					$carouselList.css({'marginLeft': 0});
+				});
+			}
+
+			function moveBackwardSlide() {
+				var $firstElement = $carouselList.find('li:first');
+				var $lastElement = $carouselList.find('li:last');
+				
+				$firstElement.before($lastElement);
+				$carouselList.css({'marginLeft': '-=500'}).animate({'marginLeft': '0'});
+			}
+			
+			function counterForward() {
+				if(indexElement < $quantityElementList - 1){
+					indexElement++;
+				}
+				else
+					indexElement = 0;
+			}
+			
+			function counterBackward() {
+				if(indexElement === 0) {
+					indexElement = $quantityElementList - 1;
+				} else {
+					indexElement--;
+				}
+			}
+			
+			function setIndicator() {
+				$('li.active').removeClass('active');
+				$('li', '.carousel-indicators').eq(indexElement).addClass('active');
+			}
+
+			$('.arrow-next').click(function () {
+				changeSlide('left');
+			});
+			$('.arrow-prev').click(function () {
+				changeSlide('right');
+			});
+			
+			function startRepeat() {
+				interval = setInterval(function(){
+					changeSlide('right');
+				}, intervalSlideTime);
+			}
+			
+			function stopRepeat() {
 				clearInterval(interval);
-			})
+			}
+			
+			startRepeat();
 			
 		});
-		return this;
 	}
 
 }(jQuery));
 
-
-$(function () {
+$(document).ready(function () {
 
 	$('#carousel').carousel();
 
