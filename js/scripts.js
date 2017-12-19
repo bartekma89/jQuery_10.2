@@ -10,10 +10,13 @@
 			direction: 'left'
 		}, options);
 
-		return this.each(function () {
+		return this.each(function (carousel) {
+			$this = $(this);
 
-			var $carouselList = $('ul', '#carousel');
-			var interval;
+			var $carouselList = $this.find('ul');
+			var $next = $this.find('.arrow-next');
+			var $prev = $this.find('.arrow-prev');
+			var interval = null;
 			var intervalSlideTime = options.animateTime;
 			var $quantityElementList = $carouselList.find('li').length;
 			var indexElement = 0;
@@ -80,10 +83,10 @@
 				$('li', '.carousel-indicators').eq(indexElement).addClass('active');
 			}
 
-			$('.arrow-next').click(function () {
+			$next.click(function () {
 				changeSlide('left');
 			});
-			$('.arrow-prev').click(function () {
+			$prev.click(function () {
 				changeSlide('right');
 			});
 
@@ -108,7 +111,7 @@
 
 $(document).ready(function () {
 
-	$('#carousel').carousel({
+	$('.carousel').carousel({
 		auto: true,
 		direction: 'left'
 	});
