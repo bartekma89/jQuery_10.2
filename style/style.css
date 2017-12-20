@@ -5,6 +5,18 @@
 	box-sizing: border-box;
 }
 
+#wrapper1 {
+	position: relative;
+	height: 50vh;
+	border: 1px solid red;
+}
+
+#wrapper2 {
+	position: relative;
+	height: 50vh;
+	border: 1px solid blue;
+}
+
 .carousel {
 	width: 500px;
 	overflow: hidden;

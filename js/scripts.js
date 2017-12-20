@@ -10,7 +10,7 @@
 			direction: 'left'
 		}, options);
 
-		return this.each(function (carousel) {
+		return this.each(function () {
 			$this = $(this);
 
 			var $carouselList = $this.find('ul');
@@ -79,8 +79,8 @@
 			}
 
 			function setIndicator() {
-				$('li.active').removeClass('active');
-				$('li', '.carousel-indicators').eq(indexElement).addClass('active');
+				$this.find('li.active').removeClass('active');
+				$this.find('.carousel-indicators li').eq(indexElement).addClass('active');
 			}
 
 			$next.click(function () {
@@ -111,9 +111,16 @@
 
 $(document).ready(function () {
 
-	$('.carousel').carousel({
+	$('#wrapper1').carousel({
 		auto: true,
 		direction: 'left'
+	});
+	
+	$('#wrapper2').carousel({
+		auto: true,
+		duration: 'fast',
+		animateTime: 5000,
+		direction: 'right'
 	});
 
 });
