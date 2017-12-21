@@ -9,9 +9,10 @@
 			auto: false,
 			direction: 'left'
 		}, options);
-
-		return this.each(function () {
-			$this = $(this);
+		
+		function Carousel(element, options) {
+			var $this = $(element);
+			var $self = $this;
 
 			var $carouselList = $this.find('ul');
 			var $next = $this.find('.arrow-next');
@@ -27,11 +28,11 @@
 					if (direction === 'left') {
 						counterForward();
 						moveForwardSlide();
-						setIndicator();
+						setIndicator($self);
 					} else {
 						counterBackward();
 						moveBackwardSlide();
-						setIndicator();
+						setIndicator($self);
 					}
 				}
 				startRepeat();
@@ -78,9 +79,9 @@
 				}
 			}
 
-			function setIndicator() {
-				$this.find('li.active').removeClass('active');
-				$this.find('.carousel-indicators li').eq(indexElement).addClass('active');
+			function setIndicator($element) {
+			$element.find('li.active').removeClass('active');
+				$element.find('.carousel-indicators li').eq(indexElement).addClass('active');
 			}
 
 			$next.click(function () {
@@ -103,6 +104,11 @@
 			}
 
 			startRepeat();
+		}
+
+		return this.each(function (index, element) {
+			
+			return new Carousel(element, options);
 
 		});
 	}
